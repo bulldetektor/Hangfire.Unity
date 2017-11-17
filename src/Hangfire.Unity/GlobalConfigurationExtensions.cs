@@ -1,7 +1,6 @@
 ﻿using System;
-using Microsoft.Practices.Unity;
 using Hangfire.Annotations;
-using Microsoft.Practices.ObjectBuilder2;
+using Unity;
 
 namespace Hangfire
 {
@@ -10,8 +9,8 @@ namespace Hangfire
         public static IGlobalConfiguration<UnityJobActivator> UseUnityActivator(
             [NotNull] this IGlobalConfiguration configuration, IUnityContainer container)
         {
-            if (configuration == null) throw new ArgumentNullException("configuration");
-            if (container == null) throw new ArgumentNullException("container");
+            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+            if (container == null) throw new ArgumentNullException(nameof(container));
 
             return configuration.UseActivator(new UnityJobActivator(container));
         }

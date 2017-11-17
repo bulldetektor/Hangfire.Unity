@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 
 namespace Hangfire.Unity.Test
@@ -8,7 +10,7 @@ namespace Hangfire.Unity.Test
     [TestClass]
     public class UnityJobActivatorTests
     {
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
         public UnityJobActivatorTests()
         {
@@ -33,9 +35,9 @@ namespace Hangfire.Unity.Test
         [TestMethod]
         public void InstancePerContainer_RegistersSameServiceInstance_ForDifferentScopeInstances()
         {
-            container.RegisterType<object>(
-           new ContainerControlledLifetimeManager(),
-           new InjectionFactory(c => new object()));
+	        container.RegisterType<object>(
+		        new ContainerControlledLifetimeManager(),
+		        new InjectionFactory(c => new object()));
 
             var activator = CreateActivator();
 
@@ -59,9 +61,9 @@ namespace Hangfire.Unity.Test
         [TestMethod]
         public void InstancePerBackgroundJob_RegistersDifferentServiceInstances_ForDifferentScopeInstances()
         {
-            container.RegisterType<object>(
-           new HierarchicalLifetimeManager(),
-           new InjectionFactory(c => new object()));
+	        container.RegisterType<object>(
+		        new HierarchicalLifetimeManager(),
+		        new InjectionFactory(c => new object()));
 
             var activator = CreateActivator();
 
@@ -127,17 +129,5 @@ namespace Hangfire.Unity.Test
         {
             return new UnityJobActivator(container);
         }
-
-        class Disposable : IDisposable
-        {
-            public bool Disposed { get; set; }
-
-            public void Dispose()
-            {
-                Disposed = true;
-            }
-        }
-
-
     }
 }

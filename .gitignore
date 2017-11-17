@@ -42,3 +42,7 @@ Icon
 /src/Hangfire.Unity/obj
 /Hangfire.Unity.Test/bin
 /Hangfire.Unity.Test/obj
+/.vs
+
+# ncrunch
+*ncrunch*
